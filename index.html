@@ -1,1321 +1,1594 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snigdh's Portfolio</title>
-  <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snigdh Rawal Portfolio</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    height: 600vh;
+    background: linear-gradient(to bottom, cyan, pink, orange, purple, navy);
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    transition: background 0.5s linear;
+  }
+
+  /* Header */
+  header {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    flex-direction: column;
+    border-bottom: 2px solid rgba(255,215,0,0.3);
+  }
+  
+  header h3 {
+    margin: 0;
+    color: white;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-shadow: 0 0 20px rgba(255,255,255,0.5);
+    letter-spacing: 2px;
+  }
+  
+  nav {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 2rem;
+  }
+  
+  nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.3rem;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 8px 16px;
+    border-radius: 25px;
+    overflow: hidden;
+  }
+  
+  nav a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,215,0,0.4), transparent);
+    transition: left 0.5s;
+  }
+  
+  nav a:hover::before {
+    left: 100%;
+  }
+  
+  nav a:hover { 
+    color: #FFD700; 
+    transform: translateY(-2px);
+    text-shadow: 0 0 10px #FFD700;
+  }
+  
+  /* Stars in navigation */
+  nav a::after {
+    content: '★';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: 0.8rem;
+    color: gold;
+    opacity: 0;
+    transition: all 0.3s;
+    transform: rotate(0deg);
+  }
+  
+  nav a:hover::after {
+    opacity: 1;
+    transform: rotate(180deg);
+  }
+
+  /* Celestial (Sun/Moon) */
+  .celestial {
+    position: fixed;
+    top: 15%;
+    right: 5%;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #FFD700, #FFA500, #FF8C00);
+    overflow: hidden;
+    z-index: 10;
+    box-shadow: 0 0 80px rgba(255, 215, 0, 0.8);
+    transition: all 0.5s ease;
+  }
+  
+  .celestial::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 70% 30%, #1e3a5f, #0f1f3c, #000);
+    transition: left 0.2s linear;
+    box-shadow: inset 20px 20px 0 rgba(100, 100, 100, 0.1);
+  }
+
+  /* Enhanced Stars */
+  .stars {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+  
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 2s infinite alternate;
+  }
+  
+  .star.small {
+    width: 2px; height: 2px;
+  }
+  
+  .star.medium {
+    width: 4px; height: 4px;
+  }
+  
+  .star.large {
+    width: 6px; height: 6px;
+    box-shadow: 0 0 10px white;
+  }
+  
+  @keyframes twinkle {
+    from { opacity: 0.3; transform: scale(1); }
+    to { opacity: 1; transform: scale(1.2); }
+  }
+
+  /* Constellation patterns */
+  .constellation {
+    position: absolute;
+    pointer-events: none;
+  }
+  
+  .constellation-line {
+    position: absolute;
+    height: 1px;
+    background: rgba(255,255,255,0.3);
+    transform-origin: left center;
+  }
+
+  /* Additional stars for dark sections */
+  .section-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.7;
+  }
+  
+  .section-star {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s infinite alternate;
+    animation-delay: calc(var(--delay) * 1s);
+    box-shadow: 0 0 4px white;
+  }
+
+  /* Enhanced Heart-shaped clouds */
+  .clouds {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  .cloud {
+    position: absolute;
+    width: var(--size);
+    height: var(--size, 150px);
+    background: rgba(255,255,255,0.4);
+    top: var(--top);
+    left: -400px;
+    filter: blur(15px);
+    box-shadow: 
+      50px 0 50px rgba(255,255,255,0.2),
+      -50px 20px 50px rgba(255,255,255,0.2),
+      20px -20px 50px rgba(255,255,255,0.2);
+    animation: floatCloud linear infinite;
+    animation-duration: calc(var(--duration) / 3);
+    transform: rotate(-45deg);
+    opacity: 0.6;
+  }
+  
+  .cloud::before,
+  .cloud::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.4);
+    border-radius: 50%;
+  }
+  
+  .cloud::before {
+    top: -50%;
+    left: 0;
+  }
+  
+  .cloud::after {
+    top: 0;
+    left: 50%;
+  }
+  
+  @keyframes floatCloud {
+    0% { transform: rotate(-45deg) translateX(0) scale(0.8); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.6; }
+    100% { transform: rotate(-45deg) translateX(120vw) scale(1.2); opacity: 0; }
+  }
+
+  /* Sections */
+  section {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    padding: 120px 20px 60px;
+  }
+
+  /* Enhanced Hero Section */
+  #hero {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  h1 {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    font-weight: bold;
+    font-size: clamp(5rem, 10vw, 12rem);
+    line-height: 0.9;
+    text-transform: uppercase;
+    margin: 0;
+    position: relative;
+    z-index: 5;
+    background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet, red);
+    background-size: 800% 800%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbow 8s linear infinite;
+    text-align: center;
+    text-shadow: 0 0 30px rgba(255,255,255,0.5);
+    filter: drop-shadow(0 0 20px rgba(255,255,255,0.3));
+  }
+  
+  @keyframes rainbow {
+    0% { background-position: 0% 50%; }
+    25% { background-position: 100% 50%; }
+    50% { background-position: 200% 50%; }
+    75% { background-position: 300% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Enhanced Flying words */
+  .words {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: clamp(2rem, 4vw, 4rem);
+    color: white;
+    font-weight: bold;
+    opacity: 0;
+    animation: flyWords 12s infinite;
+    text-shadow: 0 0 15px rgba(255,255,255,0.8);
+    z-index: 4;
+  }
+  
+  @keyframes flyWords {
+    0%   { 
+      transform: translate(calc(-50% + var(--x) * 0.1px), calc(-50% + var(--y) * 0.1px)) 
+                 scale(0.3) rotate(0deg); 
+      opacity: 0; 
+      filter: blur(10px);
+    }
+    15%  { 
+      opacity: 0.8; 
+      transform: translate(calc(-50% + var(--x) * 0.5px), calc(-50% + var(--y) * 0.5px)) 
+                 scale(1) rotate(5deg); 
+      filter: blur(0);
+    }
+    50%  { 
+      opacity: 1; 
+      transform: translate(calc(-50% + var(--x) * 1px), calc(-50% + var(--y) * 1px)) 
+                 scale(1.1) rotate(-3deg); 
+      filter: blur(0);
+    }
+    85%  { 
+      opacity: 0.3; 
+      transform: translate(calc(-50% + var(--x) * 2px), calc(-50% + var(--y) * 2px)) 
+                 scale(1.3) rotate(8deg); 
+      filter: blur(5px);
+    }
+    100% { 
+      opacity: 0; 
+      transform: translate(calc(-50% + var(--x) * 3px), calc(-50% + var(--y) * 3px)) 
+                 scale(1.5) rotate(10deg); 
+      filter: blur(15px);
+    }
+  }
+
+  /* Enhanced Headings */
+  h2 { 
+    color: white; 
+    font-size: clamp(2rem, 5vw, 3.5rem); 
+    margin-bottom: 2rem; 
+    position: relative;
+    text-shadow: 0 0 20px rgba(255,255,255,0.5);
+    font-weight: bold;
+    letter-spacing: 2px;
+  }
+  
+  /* Enhanced Stars in headings */
+  h2::before, h2::after {
+    content: '★';
+    color: gold;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.8;
+    font-size: 2rem;
+    animation: starPulse 2s infinite;
+  }
+  
+  @keyframes starPulse {
+    0%, 100% { transform: translateY(-50%) scale(1); }
+    50% { transform: translateY(-50%) scale(1.2); }
+  }
+  
+  h2::before {
+    left: -60px;
+  }
+  
+  h2::after {
+    right: -60px;
+  }
+  
+  p { 
+    color: white; 
+    font-size: clamp(1rem, 3vw, 1.8rem); 
+    max-width: 800px; 
+    position: relative;
+    line-height: 1.6;
+    text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    margin: 1rem 0;
+  }
+
+  /* Enhanced About Me Section */
+  #about {
+    position: relative;
+    background: rgba(0,0,0,0.1);
+  }
+  
+  #about::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 2px),
+      radial-gradient(circle, rgba(255,215,0,0.6) 1px, transparent 2px);
+    background-size: 80px 80px, 120px 120px;
+    background-position: 0 0, 40px 40px;
+    opacity: 0.15;
+    z-index: -1;
+    pointer-events: none;
+    animation: starField 20s linear infinite;
+  }
+  
+  @keyframes starField {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-80px); }
+  }
+
+  /* Enhanced Projects Section */
+  #projects {
+    position: relative;
+    background: rgba(0,0,0,0.2);
+  }
+  
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+    max-width: 1200px;
+  }
+  
+  .project-card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 2rem;
+    border: 2px solid rgba(255,215,0,0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,215,0,0.2), transparent);
+    transition: left 0.8s;
+  }
+  
+  .project-card:hover::before {
+    left: 100%;
+  }
+  
+  .project-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(255,215,0,0.3);
+    border-color: #FFD700;
+  }
+  
+  .project-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #FFD700;
+    margin-bottom: 1rem;
+  }
+  
+  .project-desc {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: white;
+    margin-bottom: 1rem;
+  }
+  
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  
+  .tag {
+    background: rgba(255,215,0,0.2);
+    border: 1px solid rgba(255,215,0,0.4);
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    color: #FFD700;
+    font-weight: 500;
+  }
+
+  /* Enhanced Photos Section */
+  #photos {
+    position: relative;
+    background: rgba(0,0,0,0.15);
+  }
+  
+  .photo-gallery {
+    max-width: 1200px;
+    width: 100%;
+    margin-top: 2rem;
+  }
+  
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 0 20px;
+  }
+  
+  .photo-card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 2px solid rgba(255,215,0,0.3);
+    transition: all 0.4s ease;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+  
+  .photo-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,215,0,0.2), transparent);
+    transition: left 0.8s;
+    z-index: 1;
+  }
+  
+  .photo-card:hover::before {
+    left: 100%;
+  }
+  
+  .photo-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(255,215,0,0.3);
+    border-color: #FFD700;
+  }
+  
+  .photo-img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 0;
+  }
+  
+  .photo-card:hover .photo-img {
+    transform: scale(1.05);
+  }
+  
+  .photo-caption {
+    padding: 20px;
+    text-align: center;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 2;
+  }
+  
+  .photo-caption p {
+    margin: 0;
+    font-size: 1.2rem;
+    color: white;
+    font-weight: 500;
+    text-shadow: 0 0 10px rgba(255,255,255,0.4);
+    line-height: 1.4;
+  }
+
+  /* Enhanced Spotify Section */
+  #spotify {
+    position: relative;
+    background: rgba(0,0,0,0.3);
+  }
+  
+  .spotify-container {
+    max-width: 900px;
+    width: 100%;
+    margin-top: 2rem;
+  }
+  
+  .spotify-embed {
+    width: 100%;
+    height: 380px;
+    border-radius: 15px;
+    border: 3px solid #1DB954;
+    box-shadow: 0 0 30px rgba(29, 185, 84, 0.4);
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+  }
+  
+  .spotify-embed:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 50px rgba(29, 185, 84, 0.6);
+  }
+  
+  .music-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .music-btn {
+    background: linear-gradient(135deg, #1DB954, #1ed760);
+    border: none;
+    border-radius: 50px;
+    padding: 15px 30px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .music-btn::before {
+    content: '♪';
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 1.2rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .music-btn:hover::before {
+    opacity: 1;
+  }
+  
+  .music-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(29, 185, 84, 0.4);
+  }
+
+  /* Enhanced Contact Section */
+  #contact {
+    background: linear-gradient(135deg, #1B1B0F, #2C2C1F);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-links {
+    margin-top: 30px;
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .contact-links a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 15px 30px;
+    border: 2px solid gold;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(255,215,0,0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    background: rgba(255,215,0,0.1);
+    backdrop-filter: blur(5px);
+  }
+  
+  .contact-links a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,215,0,0.4), transparent);
+    transition: left 0.6s;
+  }
+  
+  .contact-links a:hover::before {
+    left: 100%;
+  }
+  
+  /* Enhanced Stars in buttons */
+  .contact-links a::after {
+    content: '★';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: 1rem;
+    color: gold;
+    opacity: 0;
+    transition: all 0.3s ease;
+    transform: rotate(0deg);
+  }
+  
+  .contact-links a:hover::after {
+    opacity: 1;
+    transform: rotate(180deg);
+  }
+  
+  .contact-links a:hover {
+    box-shadow: 0 0 40px rgba(255,215,0,0.6);
+    transform: translateY(-5px) scale(1.05);
+    border-color: #FFD700;
+  }
+
+  /* Enhanced Contact Form */
+  .contact-form {
+    margin-top: 40px;
+    position: relative;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .contact-form form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .contact-form input, 
+  .contact-form textarea {
+    padding: 15px;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 400px;
+    border: 2px solid rgba(255,215,0,0.3);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    color: white;
+    transition: all 0.3s ease;
+  }
+  
+  .contact-form input::placeholder,
+  .contact-form textarea::placeholder {
+    color: rgba(255,255,255,0.7);
+  }
+  
+  .contact-form input:focus, 
+  .contact-form textarea:focus {
+    outline: none;
+    border-color: #FFD700;
+    box-shadow: 0 0 15px rgba(255,215,0,0.4);
+    background: rgba(255, 255, 255, 0.15);
+  }
+  
+  .contact-form textarea {
+    height: 120px;
+    resize: vertical;
+  }
+  
+  .contact-form button {
+    padding: 15px 40px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .contact-form button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s;
+  }
+  
+  .contact-form button:hover::before {
+    left: 100%;
+  }
+  
+  /* Enhanced Star in form button */
+  .contact-form button::after {
+    content: '★';
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 1.1rem;
+    color: gold;
+    opacity: 0;
+    transition: all 0.3s ease;
+    transform: rotate(0deg);
+  }
+  
+  .contact-form button:hover::after {
+    opacity: 1;
+    transform: rotate(180deg);
+  }
+  
+  .contact-form button:hover {
+    background: linear-gradient(135deg, #2980b9, #1f5f99);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(52, 152, 219, 0.4);
+  }
+
+  /* Enhanced Shooting stars */
+  .shooting-star {
+    position: absolute;
+    height: 3px;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 30%, rgba(255,215,0,0.8) 70%, rgba(255,255,255,0) 100%);
+    animation: shootStar 4s linear infinite;
+    opacity: 0;
+    border-radius: 3px;
+  }
+  
+  @keyframes shootStar {
+    0% {
+      opacity: 0;
+      transform: translateX(-50px) translateY(-50px) rotate(45deg);
+    }
+    10% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(100vw) translateY(100vh) rotate(45deg);
+    }
+  }
+
+  /* Particle effects */
+  .particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  
+  .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255,215,0,0.6);
+    border-radius: 50%;
+    animation: floatParticle 8s infinite ease-in-out;
+  }
+  
+  @keyframes floatParticle {
+    0%, 100% { 
+      transform: translateY(0) translateX(0) scale(1);
+      opacity: 0.3;
+    }
+    50% { 
+      transform: translateY(-50px) translateX(20px) scale(1.5);
+      opacity: 1;
+    }
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    header {
+      padding: 1rem;
+    }
     
-        :root {
-            /* Enhanced vibrant colors */
-            --pink: #FF0090;  /* More vibrant pink */
-            --yellow: #FFD800;
-            --blue: #00A3FF;  /* More vibrant blue */
-            --dark-blue: #0066CC;
-            
-            --primary-gradient: linear-gradient(135deg, var(--pink) 0%, var(--yellow) 50%, var(--blue) 100%);
-            --secondary-gradient: linear-gradient(45deg, var(--pink), var(--yellow), var(--blue));
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.8);
-            --bg-primary: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            --pink-glow: 0 0 15px rgba(255, 0, 144, 0.5);
-            --blue-glow: 0 0 15px rgba(0, 163, 255, 0.5);
-        }
-
-        @media (prefers-color-scheme: light) {
-            :root {
-                --bg-primary: linear-gradient(135deg, #f5d9ff 0%, #fff9d0 50%, #d0f1ff 100%);
-                --glass-bg: rgba(255, 255, 255, 0.3);
-                --glass-border: rgba(255, 255, 255, 0.4);
-                --text-primary: #2c3e50;
-                --text-secondary: rgba(44, 62, 80, 0.8);
-            }
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1rem 2rem;
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--glass-border);
-            z-index: 1000;
-            transition: all 0.3s ease;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        nav.scrolled {
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(20px);
-        }
-
-        nav ul {
-            display: flex;
-            justify-content: center;
-            list-style: none;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-
-        nav a {
-            color: var(--text-primary);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-        }
-
-        nav a:hover {
-            background: var(--primary-gradient);
-            transform: translateY(-2px);
-            color: #000;
-            box-shadow: var(--pink-glow);
-        }
-
-        .mail-button {
-            background: var(--pink);
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: var(--pink-glow);
-        }
-
-        .mail-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(255, 0, 144, 0.7);
-        }
-
-        /* Mail Popup */
-        .mail-popup {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .mail-popup.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .mail-form {
-            background: var(--glass-bg);
-            border-radius: 15px;
-            padding: 2rem;
-            width: 90%;
-            max-width: 500px;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
-            transform: translateY(-20px);
-            transition: transform 0.3s;
-        }
-
-        .mail-popup.active .mail-form {
-            transform: translateY(0);
-        }
-
-        .mail-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .close-mail {
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.8rem;
-            background: rgba(0,0,0,0.2);
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            color: var(--text-primary);
-        }
-
-        textarea.form-control {
-            min-height: 120px;
-        }
-
-        .submit-btn {
-            background: var(--pink);
-            color: white;
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
-            font-weight: 600;
-            box-shadow: var(--pink-glow);
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(255, 0, 144, 0.6);
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, var(--pink) 0%, var(--pink) 33%, var(--yellow) 33%, var(--yellow) 66%, var(--blue) 66%, var(--blue) 100%);
-            opacity: 0.3;
-            animation: float 25s ease-in-out infinite;
-            filter: blur(20px);
-            transform: rotate(45deg);
-        }
-
-        @keyframes float {
-            0%, 100% { transform: rotate(45deg) translate(0, 0); }
-            33% { transform: rotate(45deg) translate(30px, -30px); }
-            66% { transform: rotate(45deg) translate(-20px, 20px); }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradient 4s ease infinite;
-            background-size: 400% 400%;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-        }
-
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .hero p {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            color: var(--text-secondary);
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background: var(--primary-gradient);
-            color: #000;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(255, 0, 144, 0.4);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 20px 40px rgba(255, 0, 144, 0.5);
-        }
-
-        /* Sections */
-        section {
-            padding: 5rem 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        h2 {
-            font-size: 3rem;
-            margin-bottom: 3rem;
-            text-align: center;
-            position: relative;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: var(--secondary-gradient);
-            border-radius: 2px;
-        }
-
-        /* Glass Cards */
-        .glass-card {
-            background: var(--glass-bg);
-            border-radius: 20px;
-            padding: 2rem;
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            transition: all 0.3s ease;
-            margin: 2rem 0;
-        }
-
-        .glass-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        /* About Section */
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-        }
-
-        .about-text {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: var(--text-secondary);
-        }
-
-        .education {
-            background: var(--glass-bg);
-            padding: 1.5rem;
-            border-radius: 15px;
-            border-left: 4px solid var(--blue);
-            margin: 1rem 0;
-        }
-
-        .skills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .skill {
-            padding: 0.5rem 1rem;
-            background: var(--glass-bg);
-            border-radius: 25px;
-            border: 1px solid var(--glass-border);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .skill::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--secondary-gradient);
-            transition: left 0.3s ease;
-            opacity: 0.3;
-        }
-
-        .skill:hover::before {
-            left: 0;
-        }
-
-        .skill:hover {
-            transform: translateY(-2px) scale(1.05);
-            color: #000;
-            font-weight: 600;
-        }
-
-        /* Code Section */
-        .code-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .code-file {
-            background: #1e1e1e;
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid #333;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .code-file:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-        }
-
-        .code-header {
-            background: #2d2d30;
-            padding: 0.5rem 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid #333;
-        }
-
-        .code-header-left {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .code-dots {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .dot.red {
-            background: #ff5f57;
-            position: relative;
-        }
-
-        .dot.red:hover {
-            transform: scale(1.2);
-        }
-
-        .dot.red::after {
-            content: "×";
-            position: absolute;
-            top: -3px;
-            left: 3px;
-            color: black;
-            font-weight: bold;
-            font-size: 12px;
-        }
-
-        .dot.yellow {
-            background: #ffbd2e;
-        }
-
-        .dot.blue {
-            background: var(--blue);
-        }
-
-        .code-filename {
-            font-size: 0.9rem;
-            color: #ccc;
-            margin-left: 0.5rem;
-        }
-
-        .code-content {
-            padding: 1rem;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.85rem;
-            line-height: 1.4;
-            color: #d4d4d4;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .code-content::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .code-content::-webkit-scrollbar-track {
-            background: #1e1e1e;
-        }
-
-        .code-content::-webkit-scrollbar-thumb {
-            background: #555;
-            border-radius: 3px;
-        }
-
-        /* Projects Grid */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .project-card {
-            background: var(--glass-bg);
-            border-radius: 15px;
-            padding: 2rem;
-            border: 1px solid var(--glass-border);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 0, 144, 0.1), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .project-card:hover::before {
-            left: 100%;
-        }
-
-        .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .project-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--yellow);
-        }
-
-        .project-link {
-            color: var(--pink);
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s ease;
-            display: block;
-            margin-top: 1rem;
-        }
-
-        .project-link:hover {
-            color: var(--blue);
-            text-decoration: underline;
-        }
-
-        /* Photos Section */
-        .photos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .photo-card {
-            position: relative;
-            border-radius: 15px;
-            overflow: hidden;
-            aspect-ratio: 4/3;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .photo-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .photo-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .photo-card:hover img {
-            transform: scale(1.05);
-        }
-
-        .photo-caption {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            color: white;
-            padding: 1.5rem 1rem 1rem;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-        }
-
-        .photo-card:hover .photo-caption {
-            transform: translateY(0);
-        }
-
-        /* Contact Section */
-        .contact {
-            text-align: center;
-        }
-
-        .contact-links {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .contact-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            color: var(--text-primary);
-            text-decoration: none;
-            font-size: 1.1rem;
-            padding: 1rem;
-            background: var(--glass-bg);
-            border-radius: 15px;
-            border: 1px solid var(--glass-border);
-            transition: all 0.3s ease;
-        }
-
-        .contact-link:hover {
-            transform: translateY(-3px);
-            background: var(--secondary-gradient);
-            color: #000;
-            font-weight: 600;
-            box-shadow: var(--pink-glow);
-        }
-
-        /* Comment Form */
-        .comment-form {
-            background: var(--glass-bg);
-            padding: 2rem;
-            border-radius: 15px;
-            margin-top: 3rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.8rem;
-            background: rgba(0,0,0,0.2);
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-family: inherit;
-        }
-
-        textarea.form-control {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .submit-btn {
-            background: var(--pink);
-            color: white;
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 600;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 0, 144, 0.5);
-        }
-
-        /* Back to Top Button */
-        .back-to-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 50px;
-            height: 50px;
-            background: var(--blue);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            opacity: 0;
-            visibility: hidden;
-            z-index: 999;
-            box-shadow: var(--blue-glow);
-        }
-
-        .back-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .back-to-top:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 20px rgba(0, 163, 255, 0.7);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            .hero p {
-                font-size: 1.2rem;
-            }
-            h2 {
-                font-size: 2rem;
-            }
-            .about-content {
-                grid-template-columns: 1fr;
-            }
-            nav ul {
-                gap: 1rem;
-            }
-            section {
-                padding: 3rem 1rem;
-            }
-            .photos-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Scroll animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Syntax highlighting */
-        .keyword {
-            color: #569cd6;
-        }
-
-        .string {
-            color: #ce9178;
-        }
-
-        .comment {
-            color: #6a9955;
-        }
-
-        .function {
-            color: #dcdcaa;
-        }
-
-        .number {
-            color: #b5cea8;
-        }
-
-        .operator {
-            color: #d4d4d4;
-        }
-    </style>
+    header h3 {
+      font-size: 2rem;
+    }
+    
+    nav {
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    nav a {
+      font-size: 1.1rem;
+      padding: 6px 12px;
+    }
+    
+    section {
+      padding: 100px 15px 40px;
+    }
+    
+    h2::before, h2::after {
+      display: none;
+    }
+    
+    .celestial {
+      width: 100px;
+      height: 100px;
+      top: 10%;
+      right: 3%;
+    }
+    
+    .celestial::after {
+      width: 100px;
+      height: 100px;
+    }
+    
+    .contact-links {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .project-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    
+    .photo-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    
+    .photo-card {
+      border-radius: 15px;
+    }
+    
+    .photo-img {
+      height: 200px;
+    }
+    
+    .photo-caption {
+      padding: 15px;
+    }
+    
+    .photo-caption p {
+      font-size: 1rem;
+    }
+    
+    .spotify-embed {
+      height: 300px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .words {
+      font-size: 2rem;
+    }
+    
+    .project-card {
+      padding: 1.5rem;
+    }
+    
+    .music-controls {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .photo-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Loading animation */
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 1s ease;
+  }
+  
+  .loading-overlay.hide {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .loading-text {
+    font-size: 3rem;
+    color: white;
+    font-weight: bold;
+    animation: loadingPulse 2s infinite;
+  }
+  
+  @keyframes loadingPulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+  }
+
+</style>
 </head>
 <body>
-    <nav id="nav">
-        <ul>
-            <li><a href="#home" onclick="scrollToSection('home')">Home</a></li>
-            <li><a href="#about" onclick="scrollToSection('about')">About</a></li>
-            <li><a href="#code" onclick="scrollToSection('code')">Code</a></li>
-            <li><a href="#projects" onclick="scrollToSection('projects')">Projects</a></li>
-            <li><a href="#photos" onclick="scrollToSection('photos')">Photos</a></li>
-            <li><a href="#contact" onclick="scrollToSection('contact')">Contact</a></li>
-        </ul>
-        <button class="mail-button" onclick="toggleMailPopup()">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-            </svg>
-        </button>
-    </nav>
 
-    <!-- Mail Popup -->
-    <div class="mail-popup" id="mailPopup">
-        <div class="mail-form">
-            <div class="mail-header">
-                <h3>Send Me a Message</h3>
-                <button class="close-mail" onclick="toggleMailPopup()">×</button>
-            </div>
-            <form id="mail-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-                <div class="form-group">
-                    <label>Your Email</label>
-                    <input type="email" name="email" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label>Message</label>
-                    <textarea name="message" class="form-control" required></textarea>
-                </div>
-                <button type="submit" class="submit-btn">Send Message</button>
-            </form>
-        </div>
-    </div>
+<!-- Loading Screen -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-text">✨ SNIGDH RAWAL ✨</div>
+</div>
 
-    <!-- Back to Top Button -->
-    <div class="back-to-top" id="backToTop" onclick="scrollToTop()">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
-        </svg>
-    </div>
+<!-- Header -->
+<header>
+  <h3>SNIGDH RAWAL (Portfolio)</h3>
+  <nav>
+    <a href="#hero">Home</a>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#photos">Photos</a>
+    <a href="#spotify">Spotify</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
 
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>Snigdh</h1>
-            <p>Developer • Creator • Problem Solver</p>
-            <a href="#projects" class="cta-button">View My Projects</a>
-        </div>
-    </section>
+<!-- Sun / Moon -->
+<div class="celestial"></div>
+<div class="stars"></div>
 
-   <section id="about">
-    <div class="glass-card fade-in">
-        <h2>About Me</h2>
-        <div class="about-content">
-            <div class="about-text">
-                <p>I'm a passionate developer with expertise in multiple programming languages and a creative approach to problem-solving. My journey in tech combines technical skills with innovative thinking to build effective solutions.</p>
-                
-                <div class="education">
-                    <h3>🎓 Education</h3>
-                    <p><strong>V.S.P.K International School</strong><br>Completed Schooling</p>
-                    <p><strong>UPES (University of Petroleum and Energy Studies)</strong><br>Current Student<br>B.Tech in Computer Science (Specializing in Cloud Computing)</p>
-                </div>
+<!-- Heart-shaped Clouds -->
+<div class="clouds">
+  <div class="cloud" style="--size:100px; --top:10%; --duration:70s;"></div>
+  <div class="cloud" style="--size:120px; --top:30%; --duration:90s;"></div>
+  <div class="cloud" style="--size:80px; --top:50%; --duration:60s;"></div>
+  <div class="cloud" style="--size:140px; --top:20%; --duration:120s;"></div>
+  <div class="cloud" style="--size:110px; --top:40%; --duration:100s;"></div>
+  <div class="cloud" style="--size:90px; --top:60%; --duration:85s;"></div>
+  <div class="cloud" style="--size:130px; --top:15%; --duration:110s;"></div>
+</div>
 
-                <p>When I'm not coding, you'll find me exploring new cloud technologies, contributing to open-source projects, or enjoying music.</p>
-            </div>
-            <div>
-                <h3>Skills & Technologies</h3>
-                <div class="skills">
-                    <span class="skill">C++</span>
-                    <span class="skill">C</span>
-                    <span class="skill">Java</span>
-                    <span class="skill">Python</span>
-                    <span class="skill">Cloud Computing</span>
-                    <span class="skill">HTML</span>
-                    <span class="skill">BASIC</span>
-                    <span class="skill">SQL</span>
-                    <span class="skill">Scratch</span>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- Hero Section -->
+<section id="hero">
+  <div class="particles" id="heroParticles"></div>
+  <h1>SNIGDH<br>RAWAL</h1>
+  <div class="words" style="--x:-350; --y:-200;">Visionary</div>
+  <div class="words" style="--x:300; --y:-150;">Creator</div>
+  <div class="words" style="--x:-250; --y:250;">Explorer</div>
+  <div class="words" style="--x:350; --y:200;">Innovator</div>
+  <div class="words" style="--x:0; --y:300;">Dreamer</div>
+  <div class="words" style="--x:-400; --y:50;">Thinker</div>
+  <div class="words" style="--x:200; --y:-250;">Builder</div>
+  <div class="words" style="--x:-100; --y:-350;">Artist</div>
+  <div class="words" style="--x:400; --y:-50;">Pioneer</div>
+  <div class="words" style="--x:-300; --y:100;">Coder</div>
 </section>
-    <section id="code">
-        <h2 class="fade-in">Code Explorer</h2>
-        <p class="fade-in" style="text-align: center; margin-bottom: 2rem; color: var(--text-secondary);"> Click the red × to cycle through code snippets </p>
-        <div class="code-container fade-in">
-            <div class="code-file" id="dynamic-code">
-                <div class="code-header">
-                    <div class="code-header-left">
-                        <div class="code-dots">
-                            <div class="dot red" id="close-btn"></div>
-                            <div class="dot yellow"></div>
-                            <div class="dot blue"></div>
-                        </div>
-                        <div class="code-filename" id="filename">linked_list.cpp</div>
-                    </div>
-                </div>
-                <div class="code-content">
-                    <pre id="code-content"><span class="keyword">#include</span> <span class="string">&lt;iostream></span>
-<span class="keyword">using</span> <span class="keyword">namespace</span> std;
 
-<span class="comment">/* Linked List Implementation */</span></pre>
-                </div>
-            </div>
+<!-- About Me Section with Enhanced Stars -->
+<section id="about">
+  <div class="section-stars" id="about-stars"></div>
+  <div class="particles" id="aboutParticles"></div>
+  <h2>About Me</h2>
+  <p>I'm a passionate developer with expertise in multiple programming languages and a creative approach to problem-solving. My journey in tech combines technical skills with innovative thinking to build effective solutions.</p>
+  
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0; max-width: 1200px;">
+    <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 15px; padding: 2rem; border: 2px solid rgba(255,215,0,0.3);">
+      <h3 style="color: #FFD700; font-size: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center;">
+        🎓 Education
+      </h3>
+      <div style="color: white; line-height: 1.6;">
+        <div style="margin-bottom: 1rem;">
+          <strong>V.S.P.K International School</strong><br>
+          Completed Schooling
         </div>
-    </section>
+        <div>
+          <strong>UPES (University of Petroleum and Energy Studies)</strong><br>
+          Current Student<br>
+          B.Tech in Computer Science (Specializing in Cloud Computing)
+        </div>
+      </div>
+    </div>
+    
+    <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 15px; padding: 2rem; border: 2px solid rgba(255,215,0,0.3);">
+      <h3 style="color: #FFD700; font-size: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center;">
+        💻 Skills & Technologies
+      </h3>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+        <span style="background: rgba(255,215,0,0.2); padding: 0.5rem 1rem; border-radius: 20px; color: white; font-size: 0.9rem;">C++</span>
+        <span style="background: rgba(255,215,0,0.2); padding: 0.5rem 1rem; border-radius: 20px; color: white; font-size: 0.9rem;">C</span>
+        <span style="background: rgba(255,215,0,0.2); padding: 0.5rem 1rem; border-radius: 20px; color: white; font-size: 0.9rem;">Java</span>
+        <span style="background: rgba(255,215,0,0.2); padding: 0.5rem 1rem; border-radius: 20px; color: white; font-size: 0.9rem;">Python</span>
+        <span style="background: rgba(255,215,0,0.2); padding: 0.5rem 1rem; border-radius: 20px; color: white; font-size: 0.9rem;">Cloud Computing</span>
+        <span style="background: rgba(255,215,0,0.2); padding: 0.5rem 1rem; border-radius: 20px; color: white; font-size: 0.9rem;">HTML</span>
+        <span style="background: rgba(255,215,0,0.2); padding: 0.5rem 1rem; border-radius: 20px; color: white; font-size: 0.9rem;">BASIC</span>
+        <span style="background: rgba(255,215,0,0.2); padding: 0.5rem 1rem; border-radius: 20px; color: white; font-size: 0.9rem;">SQL</span>
+        <span style="background: rgba(255,215,0,0.2); padding: 0.5rem 1rem; border-radius: 20px; color: white; font-size: 0.9rem;">Scratch</span>
+      </div>
+    </div>
+  </div>
+  
+  <p>When I'm not coding, you'll find me exploring new cloud technologies, contributing to open-source projects, or enjoying music.</p>
+</section>
 
+<!-- Projects Section with Enhanced Stars -->
 <section id="projects">
-    <h2 class="fade-in">My Projects</h2>
-    <p class="fade-in" style="text-align: center; margin-bottom: 2rem; color: var(--text-secondary);">
-        Here are some of my technical explorations
-    </p>
-    <div class="projects-grid">
-        <!-- Project 1 -->
-        <div class="project-card fade-in">
-            <h3>Gemini Code Optimizer</h3>
-            <p>A Python tool that uses Google's Gemini AI to analyze code time complexity and suggest optimizations. Automatically detects inefficient algorithms and proposes better approaches.</p>
-            <div class="skills" style="margin: 1rem 0;">
-                <span class="skill">Python</span>
-                <span class="skill">Gemini API</span>
-                <span class="skill">Algorithm Analysis</span>
-            
-
-        <!-- Project 2 -->
-        <div class="project-card fade-in">
-            <h3>Coffee Shop Counter</h3>
-            <p>A Python POS system for small cafes that tracks orders, calculates bills with tax, and maintains inventory. Features a clean console interface with color-coded alerts.</p>
-            <div class="skills" style="margin: 1rem 0;">
-                <span class="skill">Python</span>
-                <span class="skill">OOP</span>
-                <span class="skill">Inventory Management</span>
-           
-
-        <!-- Project 3 -->
-        <div class="project-card fade-in">
-            <h3>Elemental DND Mixer</h3>
-            <p>A C program with Excel integration that simulates magical element combinations (fire+water=steam etc.). Includes 796 reactions with detailed outcome documentation.</p>
-            <div class="skills" style="margin: 1rem 0;">
-                <span class="skill">C</span>
-                <span class="skill">Excel Automation</span>
-                <span class="skill">Game Mechanics</span>
-
-    </div>
-</section>
-
-   <!-- ======= PHOTO GALLERY SECTION ======= -->
-<section id="photos" style="
-    padding: 40px 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    font-family: 'Inter', sans-serif;
-    background: #f8faff; /* Light blue background */
-">
-    <h2 style="
-        text-align: center;
-        font-size: 2.5rem;
-        margin-bottom: 30px;
-        color: #0066cc;
-    ">My Moments</h2>
-    
-    <div class="gallery-grid" style="
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 25px;
-        padding: 0 20px;
-    ">
-        <!-- Soothing Photo -->
-        <div class="photo-card" style="
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        ">
-            <img src="https://i.ibb.co/d0HVkwsS/image.png" 
-                 alt="A soothing photo I took" 
-                 style="
-                    width: 100%;
-                    height: 300px;
-                    object-fit: cover;
-                    border-bottom: 1px solid #e0e8ff;
-                 "
-            >
-            <div class="photo-caption" style="
-                padding: 15px;
-                text-align: center;
-                background: #f0f5ff;
-            ">
-                <p style="margin: 0; font-size: 1.1rem; color: #0066cc; font-weight: 500;">A soothing photo I took</p>
-            </div>
-        </div>
-
-        <!-- Pookie Picture -->
-        <div class="photo-card" style="
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        ">
-            <img src="https://i.ibb.co/MDdXJgtc/d275433e4993669214ca9f028e3d248f.jpg" 
-                 alt="Pookie picture" 
-                 style="
-                    width: 100%;
-                    height: 300px;
-                    object-fit: cover;
-                    border-bottom: 1px solid #e0e8ff;
-                 "
-            >
-            <div class="photo-caption" style="
-                padding: 15px;
-                text-align: center;
-                background: #f0f5ff;
-            ">
-                <p style="margin: 0; font-size: 1.1rem; color: #0066cc; font-weight: 500;">Pookie picture, I like it</p>
-            </div>
-        </div>
-
-        <!-- Oreo Chess Cake -->
-        <div class="photo-card" style="
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        ">
-            <img src="https://i.ibb.co/v4qHpkZp/image.png" 
-                 alt="Oreo chess cake" 
-                 style="
-                    width: 100%;
-                    height: 300px;
-                    object-fit: cover;
-                    border-bottom: 1px solid #e0e8ff;
-                 "
-            >
-            <div class="photo-caption" style="
-                padding: 15px;
-                text-align: center;
-                background: #f0f5ff;
-            ">
-                <p style="margin: 0; font-size: 1.1rem; color: #0066cc; font-weight: 500;">Oreo chess cake I made</p>
-            </div>
-        </div>
-
-        <!-- Drawing -->
-        <div class="photo-card" style="
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        ">
-            <img src="https://i.ibb.co/tT57JFMC/image.png" 
-                 alt="My drawing" 
-                 style="
-                    width: 100%;
-                    height: 300px;
-                    object-fit: cover;
-                    border-bottom: 1px solid #e0e8ff;
-                 "
-            >
-            <div class="photo-caption" style="
-                padding: 15px;
-                text-align: center;
-                background: #f0f5ff;
-            ">
-                <p style="margin: 0; font-size: 1.1rem; color: #0066cc; font-weight: 500;">One of my drawings</p>
-            </div>
-        </div>
-
-        <!-- It's Me -->
-        <div class="photo-card" style="
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        ">
-            <img src="https://i.ibb.co/twFdW7Dr/image.png" 
-                 alt="It's me" 
-                 style="
-                    width: 100%;
-                    height: 300px;
-                    object-fit: cover;
-                    border-bottom: 1px solid #e0e8ff;
-                 "
-            >
-            <div class="photo-caption" style="
-                padding: 15px;
-                text-align: center;
-                background: #f0f5ff;
-            ">
-                <p style="margin: 0; font-size: 1.1rem; color: #0066cc; font-weight: 500;">Hey it is me</p>
-            </div>
-        </div>
-
-        <!-- Grind -->
-        <div class="photo-card" style="
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        ">
-            <img src="https://i.ibb.co/BK2h3fVD/image.png" 
-                 alt="Grind" 
-                 style="
-                    width: 100%;
-                    height: 300px;
-                    object-fit: cover;
-                    border-bottom: 1px solid #e0e8ff;
-                 "
-            >
-            <div class="photo-caption" style="
-                padding: 15px;
-                text-align: center;
-                background: #f0f5ff;
-            ">
-                <p style="margin: 0; font-size: 1.1rem; color: #0066cc; font-weight: 500;">Grind</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<style>
-    .photo-card:hover {
-        transform: translateY(-5px) scale(1.02);
-        box-shadow: 0 10px 25px rgba(0,102,204,0.2);
-    }
-    .photo-card img {
-        transition: transform 0.5s ease;
-    }
-    .photo-card:hover img {
-        transform: scale(1.05);
-    }
-</style>
-
-    <section id="contact">
-    <h2 class="fade-in">Ping me</h2>
-    <p class="fade-in" style="text-align: center; margin-bottom: 2rem; color: var(--text-secondary);">
-        Connect with me through these platforms
-    </p>
-    
-    <!-- Updated Contact Links -->
-    <div class="contact-links">
-        <a href="https://github.com/lucky9008" target="_blank" rel="noopener noreferrer" class="contact-link fade-in">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
-                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-            </svg>
-            GitHub
-        </a>
-        <a href="https://open.spotify.com/user/oev6ho1ka4ecaea8vkjryo59p" target="_blank" rel="noopener noreferrer" class="contact-link fade-in">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
-                <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
-            </svg>
-            Spotify
-        </a>
-        <a href="https://discord.gg/ZdXYaHyg" target="_blank" rel="noopener noreferrer" class="contact-link fade-in">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
-                <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
-            </svg>
-            Join My Discord
-        </a>
-        <a href="https://instagram.com/snigdhrawal" target="_blank" rel="noopener noreferrer" class="contact-link fade-in">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
-                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
-            </svg>
-            Instagram
-        </a>
+  <div class="section-stars" id="projects-stars"></div>
+  <div class="particles" id="projectsParticles"></div>
+  <h2>Projects</h2>
+  <p>Some cool things I've built.</p>
+  
+  <div class="project-grid">
+    <div class="project-card">
+      <div class="project-title">🔧 Gemini Code Optimizer</div>
+      <div class="project-desc">A Python tool that uses Google's Gemini AI to analyze code time complexity and suggest optimizations. Automatically detects inefficient algorithms and proposes better approaches.</div>
+      <div class="project-tags">
+        <span class="tag">Python</span>
+        <span class="tag">Gemini API</span>
+        <span class="tag">Algorithm Analysis</span>
+      </div>
     </div>
     
-    <!-- Updated Contact Form (sends to snigdhrawal12@gmail.com) -->
-    <div class="comment-form fade-in">
-        <h3>Send Me a Message</h3>
-        <form id="contact-form" action="https://formspree.io/f/snigdhrawal12@gmail.com" method="POST">
-            <input type="hidden" name="_subject" value="New message from portfolio!">
-            <div class="form-group">
-                <label>Your Email</label>
-                <input type="email" name="email" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label>Message</label>
-                <textarea name="message" class="form-control" required></textarea>
-            </div>
-            <button type="submit" class="submit-btn">Send Message</button>
-        </form>
+    <div class="project-card">
+      <div class="project-title">☕ Coffee Shop Counter</div>
+      <div class="project-desc">A Python POS system for small cafes that tracks orders, calculates bills with tax, and maintains inventory. Features a clean console interface with color-coded alerts.</div>
+      <div class="project-tags">
+        <span class="tag">Python</span>
+        <span class="tag">OOP</span>
+        <span class="tag">Inventory Management</span>
+      </div>
     </div>
+    
+    <div class="project-card">
+      <div class="project-title">🧪 Elemental DND Mixer</div>
+      <div class="project-desc">A C program with Excel integration that simulates magical element combinations (fire+water=steam etc.). Includes 796 reactions with detailed outcome documentation.</div>
+      <div class="project-tags">
+        <span class="tag">C</span>
+        <span class="tag">Excel Automation</span>
+        <span class="tag">Game Mechanics</span>
+      </div>
+    </div>
+    
+    <div class="project-card">
+      <div class="project-title">🌟 Dynamic Portfolio</div>
+      <div class="project-desc">This interactive portfolio featuring celestial animations, dynamic backgrounds, and modern web technologies with responsive design.</div>
+      <div class="project-tags">
+        <span class="tag">HTML/CSS</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">Animations</span>
+      </div>
+    </div>
+  </div>
 </section>
 
-    <script>
-        // Array of code snippets (replace with your actual code later)
-        const codeSnippets = [
-            {
-                filename: "linked_list.cpp",
-                language: "cpp",
-                code: `<span class="keyword">#include</span> <span class="string">&lt;iostream></span>
-<span class="keyword">using</span> <span class="keyword">namespace</span> std;
+<!-- Photos Section with Enhanced Stars -->
+<section id="photos">
+  <div class="section-stars" id="photos-stars"></div>
+  <div class="particles" id="photosParticles"></div>
+  <h2>My Moments</h2>
+  <p>Capturing life's precious moments and creative expressions.</p>
+  
+  <div class="photo-gallery">
+    <div class="photo-grid">
+      <!-- Soothing Photo -->
+      <div class="photo-card">
+        <img src="https://i.ibb.co/d0HVkwsS/image.png" 
+             alt="A soothing photo I took" 
+             class="photo-img">
+        <div class="photo-caption">
+          <p>A soothing photo I took</p>
+        </div>
+      </div>
 
-<span class="comment">/* Linked List Implementation */</span>`
-            },
-            {
-                filename: "class.py",
-                language: "python",
-                code: `<span class="keyword">class</span> <span class="function">Class</span>:
-    <span class="keyword">def</span> <span class="function">__init__</span>(self):
-        <span class="keyword">pass</span>`
-            },
-            {
-                filename: "sorting.c",
-                language: "c",
-                code: `<span class="keyword">void</span> <span class="function">quickSort</span>(<span class="keyword">int</span> arr[], <span class="keyword">int</span> low, <span class="keyword">int</span> high) {
-    <span class="comment">// Implementation</span>
-}`
-            }
-        ];
+      <!-- Pookie Picture -->
+      <div class="photo-card">
+        <img src="https://i.ibb.co/MDdXJgtc/d275433e4993669214ca9f028e3d248f.jpg" 
+             alt="Pookie picture" 
+             class="photo-img">
+        <div class="photo-caption">
+          <p>Pookie picture, I like it</p>
+        </div>
+      </div>
 
-        let currentIndex = 0;
+      <!-- Oreo Chess Cake -->
+      <div class="photo-card">
+        <img src="https://i.ibb.co/v4qHpkZp/image.png" 
+             alt="Oreo chess cake" 
+             class="photo-img">
+        <div class="photo-caption">
+          <p>Oreo chess cake I made</p>
+        </div>
+      </div>
 
-        function cycleCode() {
-            currentIndex = (currentIndex + 1) % codeSnippets.length;
-            updateCodeDisplay();
-        }
+      <!-- Drawing -->
+      <div class="photo-card">
+        <img src="https://i.ibb.co/tT57JFMC/image.png" 
+             alt="My drawing" 
+             class="photo-img">
+        <div class="photo-caption">
+          <p>One of my drawings</p>
+        </div>
+      </div>
 
-        function updateCodeDisplay() {
-            const snippet = codeSnippets[currentIndex];
-            document.getElementById("filename").textContent = snippet.filename;
-            document.getElementById("code-content").innerHTML = snippet.code;
-        }
+      <!-- It's Me -->
+      <div class="photo-card">
+        <img src="https://i.ibb.co/twFdW7Dr/image.png" 
+             alt="It's me" 
+             class="photo-img">
+        <div class="photo-caption">
+          <p>Hey it is me</p>
+        </div>
+      </div>
 
-        // Initialize first snippet
-        updateCodeDisplay();
+      <!-- Grind -->
+      <div class="photo-card">
+        <img src="https://i.ibb.co/BK2h3fVD/image.png" 
+             alt="Grind" 
+             class="photo-img">
+        <div class="photo-caption">
+          <p>Grind</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        // Set up close button
-        document.getElementById("close-btn").addEventListener('click', cycleCode);
+<!-- Spotify Section with Enhanced Stars -->
+<section id="spotify">
+  <div class="section-stars" id="spotify-stars"></div>
+  <div class="particles" id="spotifyParticles"></div>
+  <h2>Spotify</h2>
+  <p>My favorite tracks & musical journey.</p>
+  
+  <div class="spotify-container">
+    <iframe class="spotify-embed" 
+            src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?utm_source=generator" 
+            frameBorder="0" 
+            allowfullscreen="" 
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+            loading="lazy">
+    </iframe>
+    
+    <div class="music-controls">
+      <button class="music-btn" onclick="window.open('https://open.spotify.com/', '_blank')">
+        🎵 Open Spotify
+      </button>
+      <button class="music-btn" onclick="window.open('https://open.spotify.com/user/oev6ho1ka4ecaea8vkjryo59p', '_blank')">
+        🎸 My Playlist
+      </button>
+    </div>
+  </div>
+</section>
 
-        // Form submission
-        const form = document.getElementById('contact-form');
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            fetch(form.action, {
-                method: 'POST',
-                body: new FormData(form),
-                headers: {
-                    'Accept': 'application/json'
-                }
-            }).then(response => {
-                alert('Message sent successfully!');
-                form.reset();
-            }).catch(error => {
-                alert('Error sending message. Please try again.');
-            });
-        });
+<!-- Contact Section with Enhanced Stars -->
+<section id="contact">
+  <div class="section-stars" id="contact-stars"></div>
+  <div class="particles" id="contactParticles"></div>
+  <h2>Contact Me</h2>
+  <p>Let's connect and create something amazing together.</p>
 
-        // Mail Popup Functionality
-        function toggleMailPopup() {
-            document.getElementById('mailPopup').classList.toggle('active');
-        }
+  <div class="contact-links">
+    <a href="https://open.spotify.com/user/oev6ho1ka4ecaea8vkjryo59p" target="_blank">🎵 Spotify</a>
+    <a href="https://www.linkedin.com/in/snigdh-rawal-3ab1311b8/" target="_blank">💼 LinkedIn</a>
+    <a href="https://github.com/lucky9008" target="_blank">💻 GitHub</a>
+    <a href="mailto:snigdhrawal13@gmail.com">📧 Email</a>
+  </div>
 
-        // Close popup when clicking outside
-        document.getElementById('mailPopup').addEventListener('click', function(e) {
-            if (e.target === this) {
-                toggleMailPopup();
-            }
-        });
+  <div class="contact-form">
+    <form id="contactForm">
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message ✨</button>
+    </form>
+  </div>
+</section>
 
-        // Mail form submission
-        document.getElementById('mail-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            fetch(this.action, {
-                method: 'POST',
-                body: new FormData(this),
-                headers: {
-                    'Accept': 'application/json'
-                }
-            }).then(response => {
-                alert('Message sent successfully!');
-                this.reset();
-                toggleMailPopup();
-            }).catch(error => {
-                alert('Error sending message. Please try again.');
-            });
-        });
+<script>
+// Loading screen
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loadingOverlay').classList.add('hide');
+  }, 2000);
+});
 
-        // Scroll animations
-        const fadeElements = document.querySelectorAll('.fade-in');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
+const celestial = document.querySelector('.celestial');
+const stars = document.querySelector('.stars');
 
-        fadeElements.forEach(el => observer.observe(el));
+// Generate enhanced stars for the main background
+for (let i = 0; i < 200; i++) {
+  const star = document.createElement('div');
+  const size = Math.random();
+  
+  if (size < 0.6) {
+    star.classList.add('star', 'small');
+  } else if (size < 0.9) {
+    star.classList.add('star', 'medium');
+  } else {
+    star.classList.add('star', 'large');
+  }
+  
+  star.style.top = `${Math.random() * 100}%`;
+  star.style.left = `${Math.random() * 100}%`;
+  star.style.animationDelay = `${Math.random() * 3}s`;
+  stars.appendChild(star);
+}
 
-        // Nav scroll effect
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                document.getElementById('nav').classList.add('scrolled');
-            } else {
-                document.getElementById('nav').classList.remove('scrolled');
-            }
-        });
+// Generate constellation patterns
+function createConstellation() {
+  const constellation = document.createElement('div');
+  constellation.classList.add('constellation');
+  
+  const centerX = Math.random() * window.innerWidth;
+  const centerY = Math.random() * window.innerHeight;
+  
+  constellation.style.left = `${centerX}px`;
+  constellation.style.top = `${centerY}px`;
+  
+  // Create 3-5 connected stars
+  const numStars = 3 + Math.floor(Math.random() * 3);
+  const starPositions = [];
+  
+  for (let i = 0; i < numStars; i++) {
+    const star = document.createElement('div');
+    star.classList.add('star', 'medium');
+    
+    const angle = (i / numStars) * Math.PI * 2;
+    const distance = 30 + Math.random() * 50;
+    const x = Math.cos(angle) * distance;
+    const y = Math.sin(angle) * distance;
+    
+    star.style.left = `${x}px`;
+    star.style.top = `${y}px`;
+    constellation.appendChild(star);
+    
+    starPositions.push({x, y});
+    
+    // Create lines between consecutive stars
+    if (i > 0) {
+      const line = document.createElement('div');
+      line.classList.add('constellation-line');
+      
+      const prevStar = starPositions[i-1];
+      const dx = x - prevStar.x;
+      const dy = y - prevStar.y;
+      const length = Math.sqrt(dx*dx + dy*dy);
+      const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+      
+      line.style.width = `${length}px`;
+      line.style.left = `${prevStar.x}px`;
+      line.style.top = `${prevStar.y}px`;
+      line.style.transform = `rotate(${angle}deg)`;
+      
+      constellation.appendChild(line);
+    }
+  }
+  
+  stars.appendChild(constellation);
+}
 
-        // Back to top button
-        const backToTopButton = document.getElementById('backToTop');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                backToTopButton.classList.add('visible');
-            } else {
-                backToTopButton.classList.remove('visible');
-            }
-        });
+// Create a few constellations
+for (let i = 0; i < 5; i++) {
+  setTimeout(() => createConstellation(), i * 1000);
+}
 
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
+// Generate stars for each section
+const sections = ['about', 'projects', 'photos', 'spotify', 'contact'];
+sections.forEach(sectionId => {
+  const starsContainer = document.getElementById(`${sectionId}-stars`);
+  if (starsContainer) {
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement('div');
+      star.classList.add('section-star');
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.setProperty('--delay', Math.random() * 3);
+      starsContainer.appendChild(star);
+    }
+  }
+});
 
-        // Smooth scrolling
-        function scrollToSection(id) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-        }
-    </script>
+// Generate particles for each section
+const particleSections = ['hero', 'about', 'projects', 'photos', 'spotify', 'contact'];
+particleSections.forEach(sectionId => {
+  const particlesContainer = document.getElementById(`${sectionId}Particles`);
+  if (particlesContainer) {
+    for (let i = 0; i < 20; i++) {
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.top = `${Math.random() * 100}%`;
+      particle.style.animationDelay = `${Math.random() * 8}s`;
+      particle.style.animationDuration = `${6 + Math.random() * 4}s`;
+      particlesContainer.appendChild(particle);
+    }
+  }
+});
+
+// Generate shooting stars
+function createShootingStars() {
+  const contactSection = document.getElementById('contact');
+  for (let i = 0; i < 8; i++) {
+    const shootingStar = document.createElement('div');
+    shootingStar.classList.add('shooting-star');
+    shootingStar.style.top = `${Math.random() * 60}%`;
+    shootingStar.style.left = `${Math.random() * 30}%`;
+    shootingStar.style.width = `${30 + Math.random() * 50}px`;
+    shootingStar.style.animationDelay = `${Math.random() * 6}s`;
+    shootingStar.style.animationDuration = `${3 + Math.random() * 2}s`;
+    contactSection.appendChild(shootingStar);
+  }
+}
+
+createShootingStars();
+
+// Regenerate shooting stars periodically
+setInterval(createShootingStars, 15000);
+
+// Enhanced scroll animation: sun → moon and stars
+let ticking = false;
+
+function updateScrollEffects() {
+  const scrollY = window.scrollY;
+  const docHeight = document.body.scrollHeight - window.innerHeight;
+  const progress = Math.min(scrollY / docHeight, 1);
+
+  // Sun → crescent moon with smooth transition
+  const celestialAfter = document.querySelector('.celestial::after');
+  document.documentElement.style.setProperty('--moon-progress', `${100 - progress * 100}%`);
+  
+  // Enhanced sky gradient transition with more colors
+  const skyColors = [
+    `rgba(0,255,255,${1 - progress})`,      // cyan
+    `rgba(255,105,180,${1 - progress})`,    // pink
+    `rgba(255,165,0,${1 - progress * 0.5})`, // orange
+    `rgba(128,0,128,${progress})`,          // purple
+    `rgba(25,25,112,${progress})`,          // midnight blue
+    `rgba(0,0,0,${Math.max(0, progress - 0.5) * 2})` // black for deep night
+  ];
+  
+  document.body.style.background = `linear-gradient(to bottom, ${skyColors.join(', ')})`;
+
+  // Stars appear gradually after 40%
+  const starOpacity = progress > 0.4 ? Math.min((progress - 0.4) / 0.6, 1) : 0;
+  stars.style.opacity = starOpacity;
+  
+  // Celestial glow changes
+  const celestialElement = document.querySelector('.celestial');
+  if (progress > 0.5) {
+    celestialElement.style.background = `radial-gradient(circle at 70% 30%, #1e3a5f, #0f1f3c, #000)`;
+    celestialElement.style.boxShadow = `0 0 80px rgba(176, 196, 222, ${0.3 + progress * 0.5})`;
+  } else {
+    celestialElement.style.background = `radial-gradient(circle at 30% 30%, #FFD700, #FFA500, #FF8C00)`;
+    celestialElement.style.boxShadow = `0 0 80px rgba(255, 215, 0, ${0.8 - progress * 0.3})`;
+  }
+  
+  // Section stars visibility based on scroll position
+  const sectionStars = document.querySelectorAll('.section-stars');
+  sectionStars.forEach((container, index) => {
+    const section = container.closest('section');
+    if (section) {
+      const rect = section.getBoundingClientRect();
+      const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+      const visibilityProgress = Math.max(0, Math.min(1, 1 - Math.abs(rect.top + rect.height/2 - window.innerHeight/2) / (window.innerHeight/2)));
+      container.style.opacity = isVisible ? visibilityProgress * 0.8 : 0;
+    }
+  });
+  
+  // Parallax effect for particles
+  const particles = document.querySelectorAll('.particles');
+  particles.forEach(container => {
+    const section = container.closest('section');
+    if (section) {
+      const rect = section.getBoundingClientRect();
+      const parallaxOffset = -rect.top * 0.1;
+      container.style.transform = `translateY(${parallaxOffset}px)`;
+    }
+  });
+  
+  ticking = false;
+}
+
+function requestScrollUpdate() {
+  if (!ticking) {
+    requestAnimationFrame(updateScrollEffects);
+    ticking = true;
+  }
+}
+
+window.addEventListener('scroll', requestScrollUpdate);
+
+// Add CSS custom property support for moon animation
+const style = document.createElement('style');
+style.textContent = `
+  .celestial::after {
+    left: var(--moon-progress, 100%);
+  }
+`;
+document.head.appendChild(style);
+
+// Smooth scrolling for navigation
+document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  });
+});
+
+// Enhanced form submission with animation
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const button = this.querySelector('button');
+  const originalText = button.textContent;
+  
+  button.textContent = '✨ Sending...';
+  button.style.background = 'linear-gradient(135deg, #27ae60, #2ecc71)';
+  
+  setTimeout(() => {
+    button.textContent = '✅ Sent!';
+    setTimeout(() => {
+      button.textContent = originalText;
+      button.style.background = 'linear-gradient(135deg, #3498db, #2980b9)';
+      this.reset();
+    }, 2000);
+  }, 1500);
+});
+
+// Create floating elements on mouse move
+let mouseX = 0, mouseY = 0;
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  
+  // Create occasional floating particles
+  if (Math.random() < 0.02) {
+    createFloatingParticle(mouseX, mouseY);
+  }
+});
+
+function createFloatingParticle(x, y) {
+  const particle = document.createElement('div');
+  particle.style.position = 'fixed';
+  particle.style.left = `${x}px`;
+  particle.style.top = `${y}px`;
+  particle.style.width = '4px';
+  particle.style.height = '4px';
+  particle.style.background = '#FFD700';
+  particle.style.borderRadius = '50%';
+  particle.style.pointerEvents = 'none';
+  particle.style.zIndex = '9999';
+  particle.style.opacity = '0.8';
+  
+  document.body.appendChild(particle);
+  
+  // Animate particle
+  const animation = particle.animate([
+    { transform: 'translate(0, 0) scale(1)', opacity: 0.8 },
+    { transform: `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) scale(0)`, opacity: 0 }
+  ], {
+    duration: 1000,
+    easing: 'ease-out'
+  });
+  
+  animation.onfinish = () => particle.remove();
+}
+
+// Initialize scroll effects
+requestScrollUpdate();
+
+// Add window resize handler for responsive updates
+window.addEventListener('resize', () => {
+  requestScrollUpdate();
+});
+
+// Preload animations
+setTimeout(() => {
+  document.body.style.opacity = '1';
+}, 100);
+
+console.log('🌟 Snigdh Rawal Portfolio Loaded Successfully! ✨');
+</script>
 </body>
 </html>
